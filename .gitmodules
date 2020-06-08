@@ -1,0 +1,3 @@
+[submodule "win32py"]
+	path = win32py
+	url = https://github.com/rapsealk/win32py.git
