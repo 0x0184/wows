@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import os
 import time
-import datetime
-from PIL import Image, ImageGrab
+from datetime import datetime
+from PIL import ImageGrab
 
 import numpy as np
 
@@ -34,12 +34,16 @@ def is_battle_ended():
 
 
 def is_replay_button_enabled(frame):
+    assert frame.size == (WIDTH, HEIGHT)
     frame = np.array(frame)
-    frame = frame[HEIGHT-84:HEIGHT-56, WIDTH-352:WIDTH-256]
+    frame = frame[HEIGHT-92:HEIGHT-64, WIDTH-360:WIDTH-264]
 
     frame[:, :, G] = 0
     frame[:, :, B] = 0
     frame[frame < 128] = 0
+
+    # Image.fromarray(frame).show()
+    # print(np.mean(frame))
 
     return np.mean(frame) >= 48
 
@@ -59,6 +63,7 @@ if __name__ == "__main__":
         print('----------------------------')
 
         while not is_battle_ended():
+            win32py.Keyboard.click(0x11)
             time.sleep(1)
 
         print('--------------------------')
@@ -72,6 +77,6 @@ if __name__ == "__main__":
         print('[%s] -*- Replay enabled! -*-' % datetime.now().isoformat(' '))
         print('---------------------------')
 
-        win32py.Mouse.move(1520, 1010)
+        win32py.Mouse.move(1608, 1002)
         win32py.Mouse.click(0x0002)
         win32py.Mouse.click(0x0004)
