@@ -9,7 +9,7 @@ import numpy as np
 
 from win32py import win32py
 
-MOD_DIR = 'F:\\Games\\World_of_Warships_ASIA\\res_mods\\0.9.4.1\\PnFMods\\AutoMod'
+MOD_DIR = 'F:\\Games\\World_of_Warships_ASIA\\res_mods\\0.9.5.0\\PnFMods\\AutoMod'
 BATTLE_START_LOG = 'battle_start.log'
 BATTLE_END_LOG = 'battle_end.log'
 

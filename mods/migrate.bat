@@ -1,5 +1,5 @@
 :: PATH to World of Warships game.
-set path="F:\Games\World_of_Warships_ASIA\res_mods\0.9.4.1"
+set path="F:\Games\World_of_Warships_ASIA\res_mods\0.9.5.0"
 
 if not exist %path%\PnFMods ( mkdir %path%\PnFMods )
 
