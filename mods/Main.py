@@ -12,5 +12,5 @@ def battle_end(*args, **kwargs):
         f.write('%s' % args[0])
 
 
-events.onBattleStart(battle_start)
-events.onBattleEnd(battle_end)
+events.onBattleStart(battle_start)  # noqa: F821
+events.onBattleEnd(battle_end)      # noqa: F821

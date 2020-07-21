@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import time
+import json
 from datetime import datetime
 from PIL import ImageGrab
 
@@ -9,9 +10,11 @@ import numpy as np
 
 from win32py import win32py
 
-MOD_DIR = 'F:\\Games\\World_of_Warships_ASIA\\res_mods\\0.9.5.0\\PnFMods\\AutoMod'
-BATTLE_START_LOG = 'battle_start.log'
-BATTLE_END_LOG = 'battle_end.log'
+with open('config.json', 'r') as f:
+    data = json.loads(''.join(f.readlines()))
+    MOD_DIR = data["mod"]
+    BATTLE_START_LOG = data["battle_start"]
+    BATTLE_END_LOG = data["battle_end"]
 
 R, G, B = (0, 1, 2)
 WIDTH, HEIGHT = (1920, 1080)
