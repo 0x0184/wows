@@ -80,6 +80,7 @@ if __name__ == "__main__":
         print('[%s] -*- Replay enabled! -*-' % datetime.now().isoformat(' '))
         print('---------------------------')
 
-        win32py.Mouse.move(1608, 1002)
-        win32py.Mouse.click(0x0002)
-        win32py.Mouse.click(0x0004)
+        for _ in range(5):
+            win32py.Mouse.move(1608, 1002)
+            win32py.Mouse.click(0x0002)
+            win32py.Mouse.click(0x0004)
