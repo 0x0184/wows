@@ -10,6 +10,9 @@ import numpy as np
 
 from win32py import win32py
 
+BATTLE_START_TIME = time.time()
+BATTLE_END_TIME = time.time()
+
 with open('config.json', 'r') as f:
     data = json.loads(''.join(f.readlines()))
     MOD_DIR = data["mod"]
@@ -21,23 +24,34 @@ WIDTH, HEIGHT = (1920, 1080)
 
 
 def is_battle_started():
-    log_file = os.path.join(MOD_DIR, BATTLE_START_LOG)
-    flag = os.path.exists(log_file)
-    if flag:
-        os.remove(log_file)
-    return flag
+    global BATTLE_START_TIME
+    try:
+        battle_start_time = os.path.getmtime(os.path.join(MOD_DIR, BATTLE_START_LOG))
+        if battle_start_time > BATTLE_START_TIME:
+            BATTLE_START_TIME = battle_start_time
+            return True
+    except FileNotFoundError:
+        pass
+    return False
 
 
 def is_battle_ended():
+    global BATTLE_END_TIME
     log_file = os.path.join(MOD_DIR, BATTLE_END_LOG)
-    flag = os.path.exists(log_file)
-    if flag:
-        os.remove(log_file)
-    return flag
+    try:
+        battle_end_time = os.path.getmtime(log_file)
+        if battle_end_time > BATTLE_END_TIME:
+            BATTLE_END_TIME = battle_end_time
+            return True
+    except FileNotFoundError:
+        pass
+    except ValueError:
+        pass
+    return False
 
 
 def is_replay_button_enabled(frame):
-    assert frame.size == (WIDTH, HEIGHT)
+    # assert frame.size == (WIDTH, HEIGHT)
     frame = np.array(frame)
     frame = frame[HEIGHT-92:HEIGHT-64, WIDTH-360:WIDTH-264]
 
