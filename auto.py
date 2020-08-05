@@ -62,7 +62,7 @@ def is_replay_button_enabled(frame):
     # Image.fromarray(frame).show()
     # print(np.mean(frame))
 
-    return np.mean(frame) >= 48
+    return np.mean(frame) >= 44
 
 
 if __name__ == "__main__":
