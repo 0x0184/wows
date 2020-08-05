@@ -1,7 +1,7 @@
 :: PATH to World of Warships game.
 IF NOT "%1" == "" ( SET region=%1) ELSE ( SET region=NA)
 
-SET path="C:\Games\World_of_Warships_%region%\bin\2697511\res_mods\0.9.6.1"
+SET path="C:\Games\World_of_Warships_%region%\bin\2744482\res_mods\0.9.7.0"
 
 IF NOT EXIST %path%\PnFMods ( mkdir %path%\PnFMods )
 
