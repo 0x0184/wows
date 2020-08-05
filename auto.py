@@ -94,7 +94,8 @@ if __name__ == "__main__":
         print('[%s] -*- Replay enabled! -*-' % datetime.now().isoformat(' '))
         print('---------------------------')
 
-        for _ in range(5):
+        while is_replay_button_enabled(ImageGrab.grab()):
             win32py.Mouse.move(1608, 1002)
             win32py.Mouse.click(0x0002)
             win32py.Mouse.click(0x0004)
+            time.sleep(1)
