@@ -4,10 +4,9 @@
 ![](https://github.com/rapsealk/wows/workflows/Python%20application/badge.svg)
 
 ## Installation
-```
-> git clone https://github.com/0x0184/wows.git --recurse-submodules
-> cd mods/
-mods > ./migrate.bat
-mods > cd ..
-> python auto.py
+```bat
+git clone https://github.com/0x0184/wows.git -b feat/log --recurse-submodules [--depth 1]
+cd mods/ && ./migrate.bat
+cd ..
+python auto.py
 ```
