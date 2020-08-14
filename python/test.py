@@ -26,9 +26,11 @@ class BattleTest(unittest.TestCase):
         self.assertTrue(auto.is_battle_ended())
 
     def test_replay_button_enabled(self):
-        frame = Image.open('images/replay_enabled.png')
+        frame = Image.open(
+            os.path.join(os.path.dirname(__file__), 'images', 'replay_enabled.png'))      # noqa: E501
         self.assertTrue(auto.is_replay_button_enabled(frame))
-        frame = Image.open('images/replay_not_enabled.png')
+        frame = Image.open(
+            os.path.join(os.path.dirname(__file__), 'images', 'replay_not_enabled.png'))  # noqa: E501
         self.assertFalse(auto.is_replay_button_enabled(frame))
 
 

@@ -13,7 +13,7 @@ from win32py import win32py
 BATTLE_START_TIME = time.time()
 BATTLE_END_TIME = time.time()
 
-with open('config.json', 'r') as f:
+with open(os.path.join(os.path.dirname(__file__), '..', 'config.json'), 'r') as f:
     data = json.loads(''.join(f.readlines()))
     MOD_DIR = data["mod"]
     BATTLE_START_LOG = data["battle_start"]

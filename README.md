@@ -7,6 +7,6 @@
 ```bat
 git clone https://github.com/0x0184/wows.git -b feat/log --recurse-submodules [--depth 1]
 cd mods/ && ./migrate.bat
-cd ..
+cd ../python
 python auto.py
 ```
