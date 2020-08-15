@@ -5,7 +5,6 @@ SET installed_drive=
 :: #1. Find the drive in which WOWs is installed.
 for %%x in (C, D, E, F) do (
     IF EXIST "%%x:\Games\World_of_Warships_%region%" (
-        echo "Answer: %%x"
         SET installed_drive=%%x
     )
 )
