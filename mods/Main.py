@@ -7,7 +7,8 @@ import time     # noqa: E402
 CALLBACK_TICK = 1
 callback_handle = None
 
-MAX_HEALTH = 18400
+MAX_HEALTH = 1840
+dx, dy = (0, 0)
 
 
 class PlayerInfo:
@@ -44,7 +45,7 @@ class PlayerInfo:
 # def parse_player(dict_):
 #     pass
 def reset():
-    global CACHE_PLAYER, CACHE_ENEMY
+    global CACHE_PLAYER, CACHE_ENEMY, dx, dy
     obj = {
         "id": -1,
         "teamId": -1,
@@ -60,9 +61,12 @@ def reset():
     }
     CACHE_PLAYER = PlayerInfo(obj)
     CACHE_ENEMY = PlayerInfo(obj)
+    dx, dy = (0, 0)
 
 
 def callback_func(*args, **kwargs):
+    global dx, dy
+
     player = battle.getSelfPlayerInfo()     # noqa: F821
     """
     player_id = player["id"]
@@ -107,6 +111,11 @@ def callback_func(*args, **kwargs):
         with open('enemy.log', 'w') as f:
             f.write(str(bots[0]))
 
+    dx_, dy_ = (dx, dy)
+    dx, dy = (0, 0)
+    with open('mouse%d.log' % int(time.time() * 1000), 'w') as f:
+        f.write('{"dx": %d, "dy": %d}' % (dx_, dy_))
+
 
 def battle_start(*args, **kwargs):
     global callback_handle
@@ -140,12 +149,18 @@ def battle_quit(*args, **kwargs):
 
 
 def on_mouse_event(event):
+    global dx, dy
+
+    """
     if callback_handle is None:
         return
 
     dx, dy = (event.dx, event.dy)
     with open('mouse%s.log' % int(time.time() * 1000), 'w') as f:
         f.write('{"dx": %d, "dy": %d}' % (dx, dy))
+    """
+    dx += event.dx
+    dy += event.dy
 
 
 def got_ribbon(*args, **kwargs):
