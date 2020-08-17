@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 const DIR = 'F:/Games/World_of_Warships_NA';
-const MOD_DIR = [DIR, 'bin/2744482/res_mods/0.9.7.0/pnFMods/AutoMod'].join('/');
+const MOD_DIR = [DIR, 'bin/2744482/res_mods/0.9.7.0/PnFMods/AutoMod'].join('/');
 
 const PREFIX = {
     Battle: 'battle',
@@ -12,8 +12,10 @@ const PREFIX = {
 const filenames = [];
 
 fs.watch(MOD_DIR, (eventType, filename) => {
-    if (!filename || eventType != 'change') { return; }
-    if (filenames.includes(filename)) { return; }
+    if (!filename
+        || !filename.startsWith(PREFIX.Mouse)
+        || eventType != 'change'
+        || filenames.includes(filename)) { return; }
     filenames.push(filename);
 
     const path = [MOD_DIR, filename].join('/');

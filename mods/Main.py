@@ -7,7 +7,7 @@ import time     # noqa: E402
 CALLBACK_TICK = 1
 callback_handle = None
 
-MAX_HEALTH = 1840
+MAX_HEALTH = 18400
 dx, dy = (0, 0)
 
 
@@ -162,6 +162,9 @@ def on_mouse_event(event):
     dx += event.dx
     dy += event.dy
 
+    # with open('mouse.log', 'w') as f:
+    #     f.write('{"dx": %d, "dy": %d}' % (dx, dy))
+
 
 def got_ribbon(*args, **kwargs):
     ribbons = list(args)
@@ -172,5 +175,5 @@ def got_ribbon(*args, **kwargs):
 events.onBattleStart(battle_start)      # noqa: F821
 events.onBattleEnd(battle_end)          # noqa: F821
 events.onBattleQuit(battle_quit)        # noqa: F821
-# events.onMouseEvent(on_mouse_event)     # noqa: F821
+events.onMouseEvent(on_mouse_event)     # noqa: F821
 # events.onGotRibbon(got_ribbon)          # noqa: F821
