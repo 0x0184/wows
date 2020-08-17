@@ -2,13 +2,13 @@ API_VERSION = 'API_v1.0'
 MOD_NAME = 'AutoMod'
 # Python 2.7
 
-import time     # noqa: E402
-
 CALLBACK_TICK = 1
 callback_handle = None
 
 MAX_HEALTH = 18400
 dx, dy = (0, 0)
+tick = 0
+ribbon_number = 0
 
 
 class PlayerInfo:
@@ -45,7 +45,7 @@ class PlayerInfo:
 # def parse_player(dict_):
 #     pass
 def reset():
-    global CACHE_PLAYER, CACHE_ENEMY, dx, dy
+    global CACHE_PLAYER, CACHE_ENEMY, dx, dy, tick, ribbon_number
     obj = {
         "id": -1,
         "teamId": -1,
@@ -61,51 +61,27 @@ def reset():
     }
     CACHE_PLAYER = PlayerInfo(obj)
     CACHE_ENEMY = PlayerInfo(obj)
+    with open('enemy.log', 'w') as f:
+        f.write(str(CACHE_ENEMY))
+
     dx, dy = (0, 0)
+    tick = 0
+    ribbon_number = 0
 
 
 def callback_func(*args, **kwargs):
-    global dx, dy
+    global dx, dy, tick
 
     player = battle.getSelfPlayerInfo()     # noqa: F821
-    """
-    player_id = player["id"]
-    player_team_id = player["teamId"]
-    player_ship_id = player["shipId"]
-    player_data = player["shipGameData"]
-    try:
-        player_knot = player_data["speed"]
-    except KeyError:
-        player_knot = 0
-    player_health = player_data["health"]
-    player_health_max = player_data["maxHealth"]
-    player_yaw = player_data["yaw"]
-    """
     player = PlayerInfo(player)
+
+    with open('player.log', 'w') as f:
+        f.write(str(player))
 
     players = battle.getPlayersInfo()           # noqa: F821
     bots = [battle.getPlayerInfo(bot["id"])     # noqa: F821
             for bot in players.values() if bot["id"] != player.id]
-
-    if bots:
-        with open('enemy-raw.log', 'w') as f:
-            f.write(str(bots[0]))
-    """
-    for bot in bots:
-        bot_id = bot["id"]
-        bot_team_id = bot["teamId"]
-        bot_ship_id = bot["shipId"]
-        bot_data = bot["shipGameData"]
-        bot_health = bot_data["health"]
-        bot_health_max = bot_data["maxHealth"]
-        bot_yaw = bot_data["yaw"]
-        bot_visibility = bot_data["isVisible"]
-        bot_ship_visibility = bot_data["isShipVisible"]
-    """
     bots = [PlayerInfo(bot) for bot in bots]
-
-    with open('player.log', 'w') as f:
-        f.write(str(player))
 
     if bots:
         with open('enemy.log', 'w') as f:
@@ -113,7 +89,8 @@ def callback_func(*args, **kwargs):
 
     dx_, dy_ = (dx, dy)
     dx, dy = (0, 0)
-    with open('mouse%d.log' % int(time.time() * 1000), 'w') as f:
+    tick = (tick + 1) % 4
+    with open('mouse%d.log' % tick, 'w') as f:
         f.write('{"dx": %d, "dy": %d}' % (dx_, dy_))
 
 
@@ -151,24 +128,19 @@ def battle_quit(*args, **kwargs):
 def on_mouse_event(event):
     global dx, dy
 
-    """
     if callback_handle is None:
         return
 
-    dx, dy = (event.dx, event.dy)
-    with open('mouse%s.log' % int(time.time() * 1000), 'w') as f:
-        f.write('{"dx": %d, "dy": %d}' % (dx, dy))
-    """
     dx += event.dx
     dy += event.dy
 
-    # with open('mouse.log', 'w') as f:
-    #     f.write('{"dx": %d, "dy": %d}' % (dx, dy))
-
 
 def got_ribbon(*args, **kwargs):
+    global ribbon_number
+
     ribbons = list(args)
-    with open('ribbon%s.log' % int(time.time() * 1000), 'w') as f:
+    ribbon_number += 1
+    with open('ribbon%d.log' % ribbon_number, 'w') as f:
         f.write('{"ribbons": %s}' % ribbons)
 
 
