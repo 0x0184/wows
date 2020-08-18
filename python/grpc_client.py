@@ -43,6 +43,16 @@ class QueueClient:
         self.rate = 1.0
         """
 
+    def get_player_info(self, is_enemy=False):
+        try:
+            request = queue_pb2.PlayerInfoRequest(is_enemy=is_enemy)
+            info = self.stub.GetPlayerInfo(request)
+            print('info:', info.data.id, info.data.team_id, info.data.yaw)
+        except grpc._channel._InactiveRpcError as e:
+            print('[PlayerInfo] grpc._channel._InactiveRpcError:', e)
+        except Exception as e:
+            print('[PlayerInfo] Exception:', e)
+
     def get_mouse_input(self, timestamp=0):
         if not timestamp:
             timestamp = int(time.time() * 1000) - 1000
@@ -98,6 +108,8 @@ def digest_key_hook(queue):
 
 if __name__ == "__main__":
     client = QueueClient()
+    client.get_player_info()
+    client.get_player_info(True)
 
     # thread = Thread(target=client.run, daemon=True)
     # thread.start()

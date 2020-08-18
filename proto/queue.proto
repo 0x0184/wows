@@ -2,10 +2,9 @@ syntax = "proto3";
 
 package wows;
 
-// import "google/protobuf/empty.proto";   // google.protobuf.Empty
-
 service QueueService {
     rpc GetMouseInput(MouseInputRequest) returns (MouseInputResponse) {}
+    rpc GetPlayerInfo(PlayerInfoRequest) returns (PlayerInfoResponse) {}
     // rpc GetKeyboardInput(KeyboardInputRequest) returns (KeyboardInputResponse) {}
 }
 
@@ -21,6 +20,26 @@ message MouseInput {
     int32 dx = 1;
     int32 dy = 2;
     bool click = 3;
+}
+
+message PlayerInfoRequest {
+    bool is_enemy = 1;
+}
+
+message PlayerInfoResponse {
+    PlayerInfo data = 1;
+}
+
+message PlayerInfo {
+    uint64 id = 1;
+    uint64 team_id = 2;
+    uint64 ship_id = 3;
+    float health = 4;
+    float max_health = 5;
+    float yaw = 6;
+    float speed = 7;
+    bool is_visible = 8;
+    bool is_ship_visible = 9;
 }
 
 /*

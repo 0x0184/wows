@@ -28,6 +28,15 @@ class ModMock:
             with open(os.path.join(MOD_DIR, 'mouse.log'), 'w') as f:
                 f.write(data)
             print('[%s] Mouse: %s' % (datetime.now().isoformat(' '), data))
+
+            args = (12345, 1, 9999, 18400, 18400, random.random(), random.random(), 1, 1)
+            data = '''{"id": %d, "team_id": %d, "ship_id": %s,
+                       "health": %f, "max_health": %d,
+                       "yaw": %f, "speed": %f,
+                       "is_visible": %r, "is_ship_visible": %r}''' % args
+            print('[%s] Player: %s' % (datetime.now().isoformat(' '), data))
+            with open(os.path.join(MOD_DIR, 'player.log'), 'w') as f:
+                f.write(data)
             time.sleep(1.0 / self.rate)
 
 

@@ -35,10 +35,10 @@ class PlayerInfo:
         args = (self.id, self.team_id, self.ship_id,
                 self.health, self.health_max, self.yaw, self.speed,
                 self.is_visible, self.is_ship_visible)
-        return '''{"id": %d, "teamId": %d, "shipId": %s,
-                   "health": %f, "maxHealth": %d,
+        return '''{"id": %d, "team_id": %d, "ship_id": %s,
+                   "health": %f, "max_health": %d,
                    "yaw": %f, "speed": %f,
-                   "isVisible": %r, "isShipVisible": %r}''' % args
+                   "is_visible": %r, "is_ship_visible": %r}''' % args
 
     def assign(self, info):
         self.__dict__ = info.__dict__
