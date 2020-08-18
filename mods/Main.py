@@ -2,6 +2,8 @@ API_VERSION = 'API_v1.0'
 MOD_NAME = 'AutoMod'
 # Python 2.7
 
+import time     # noqa: E402
+
 CALLBACK_TICK = 1
 callback_handle = None
 
@@ -91,7 +93,7 @@ def callback_func(*args, **kwargs):
     dx, dy = (0, 0)
     tick = (tick + 1) % 4
     with open('mouse%d.log' % tick, 'w') as f:
-        f.write('{"dx": %d, "dy": %d}' % (dx_, dy_))
+        f.write('{"dx": %d, "dy": %d, "timestamp": %d}' % (dx_, dy_, int(time.time() * 1000)))  # noqa: E501
 
 
 def battle_start(*args, **kwargs):

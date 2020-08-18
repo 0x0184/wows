@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package wows;
+
+// import "google/protobuf/empty.proto";   // google.protobuf.Empty
+
+service QueueService {
+    rpc GetMouseInput(MouseInputRequest) returns (MouseInputResponse) {}
+    // rpc GetKeyboardInput(KeyboardInputRequest) returns (KeyboardInputResponse) {}
+}
+
+message MouseInputRequest {
+    uint64 timestamp = 1;
+}
+
+message MouseInputResponse {
+    MouseInput data = 1;
+}
+
+message MouseInput {
+    int32 dx = 1;
+    int32 dy = 2;
+    bool click = 3;
+}
+
+/*
+message KeyboardInputRequest {
+    uint64 timestamp = 1;
+}
+
+message KeyboardInputResponse {
+    KeyboardInput data = 1;
+}
+
+message KeyboardInput {
+    uint32 key = 1;
+}
+*/

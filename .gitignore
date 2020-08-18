@@ -2,3 +2,6 @@ __pycache__/
 
 # npm
 node_modules/
+
+# protobuf
+*_pb2*

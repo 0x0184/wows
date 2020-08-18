@@ -10,6 +10,8 @@
   "author": "rapsealk",
   "license": "Apache-2.0",
   "dependencies": {
-    "esm": "^3.2.25"
+    "@grpc/proto-loader": "^0.5.5",
+    "esm": "^3.2.25",
+    "grpc": "^1.24.3"
   }
 }
