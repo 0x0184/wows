@@ -23,21 +23,7 @@ const QueueService = protoDescriptor.wows.QueueService;
 class QueueServer {
 
     constructor() {
-        this.player = {
-            id: 0, team_id: 0, ship_id: 0,
-            health: 1000, max_health: 1000,
-            yaw: 0, speed: 0,
-            is_visible: true, is_ship_visible: true
-        };
-        this.enemy = {
-            id: 0, team_id: 0, ship_id: 0,
-            health: 1000, max_health: 1000,
-            yaw: 0, speed: 0,
-            is_visible: false, is_ship_visible: false
-        };
-        this.mouseQueue = [];
-        this.keyboardQueue = [];
-        this.ribbonQueue = [];
+        this.reset();
         this.server = new grpc.Server();
         this.server.addService(QueueService.service, {
             getMouseInput: this.getMouseInput,
@@ -56,9 +42,28 @@ class QueueServer {
         this.server.start();
     }
 
+    reset() {
+        this.player = {
+            id: 0, team_id: 0, ship_id: 0,
+            health: 1000, max_health: 1000,
+            yaw: 0, speed: 0,
+            is_visible: true, is_ship_visible: true
+        };
+        this.enemy = {
+            id: 0, team_id: 0, ship_id: 0,
+            health: 1000, max_health: 1000,
+            yaw: 0, speed: 0,
+            is_visible: false, is_ship_visible: false
+        };
+        this.mouseQueue = [];
+        this.keyboardQueue = [];
+        this.ribbonQueue = [];
+    }
+
     addMouseInput(mouseInput) {
+        if (!this.enemy.is_visible) { return; }
         this.mouseQueue.push(mouseInput);    // { dx, dy, timestamp }
-        console.log('MouseQueue:', this.mouseQueue, this.mouseQueue.length);
+        console.log('Mouse:', mouseInput, this.mouseQueue.length);
     }
 
     addKeyboardInput(keyboardInput) {

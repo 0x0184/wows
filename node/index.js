@@ -18,7 +18,6 @@ const filenames = [];
 function handleMouseLog(path) {
     return new Promise((resolve, reject) => {
         const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
-        console.log('Mouse:', data);    // data.dx, data.dy, data.timestamp
         server.addMouseInput(data);
         resolve();
     });
@@ -27,6 +26,11 @@ function handleMouseLog(path) {
 function handlePlayerLog(path) {
     const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
     server.setPlayer(data);
+}
+
+function handleEnemyLog(path) {
+    const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
+    server.setEnemy(data);
 }
 
 fs.watch(MOD_DIR, (eventType, filename) => {
@@ -38,6 +42,10 @@ fs.watch(MOD_DIR, (eventType, filename) => {
         || filenames.includes(filename)) { return; }
 
     const path = [MOD_DIR, filename].join('/');
+
+    if (filename.startsWith(PREFIX.Battle)) {
+        server.reset();
+    }
 
     if (filename.startsWith(PREFIX.Mouse)) {
         filenames.push(filename);
@@ -54,6 +62,10 @@ fs.watch(MOD_DIR, (eventType, filename) => {
 
     if (filename.startsWith(PREFIX.Player)) {
         handlePlayerLog(path);
+    }
+
+    if (filename.startsWith(PREFIX.Enemy)) {
+        handleEnemyLog(path);
     }
 });
 

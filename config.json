@@ -1,5 +1,6 @@
 {
-    "mod": "C:\\Games\\World_of_Warships_NA\\bin\\2744482\\res_mods\\0.9.7.0\\PnFMods\\AutoMod",
+    "mod": "F:\\Games\\World_of_Warships_NA\\bin\\2744482\\res_mods\\0.9.7.0\\PnFMods\\AutoMod",
     "battle_start": "battle_start.log",
-    "battle_end": "battle_end.log"
+    "battle_end": "battle_end.log",
+    "battle_quit": "battle_quit.log"
 }

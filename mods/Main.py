@@ -4,7 +4,7 @@ MOD_NAME = 'AutoMod'
 
 import time     # noqa: E402
 
-CALLBACK_TICK = 1
+CALLBACK_TICK = 0.1
 callback_handle = None
 
 MAX_HEALTH = 18400
@@ -28,7 +28,7 @@ class PlayerInfo:
         except:     # noqa: E722, KeyError
             self.speed = 0
 
-        self.is_visible = data["isVisible"] or False
+        self.is_visible = data["isVisible"] or 0
         self.is_ship_visible = data["isShipVisible"] or 0
 
     def __str__(self):
@@ -38,7 +38,7 @@ class PlayerInfo:
         return '''{"id": %d, "team_id": %d, "ship_id": %s,
                    "health": %f, "max_health": %d,
                    "yaw": %f, "speed": %f,
-                   "is_visible": %r, "is_ship_visible": %r}''' % args
+                   "is_visible": %d, "is_ship_visible": %d}''' % args
 
     def assign(self, info):
         self.__dict__ = info.__dict__
