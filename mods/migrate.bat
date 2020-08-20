@@ -12,18 +12,21 @@ for %%x in (C, D, E, F) do (
 IF "%installed_drive%" == "" (
     echo GAME_NOT_FOUND
     exit
-) ELSE (
-    echo "GAME: %installed_drive%"
+) ELSE ( echo "GAME: %installed_drive%" )
+
+SET game_path=%installed_drive%:\Games\World_of_Warships_%region%\bin
+FOR /D %%d in ("%game_path%\*") DO (
+    SET build_path=%%d
 )
 
-SET path="%installed_drive%:\Games\World_of_Warships_%region%\bin\2744482\res_mods\0.9.7.0"
+FOR /D %%d in ("%build_path%\res_mods\*") DO (
+    SET version_path=%%d
+)
 
-IF NOT EXIST %path%\PnFMods ( mkdir %path%\PnFMods )
+IF NOT EXIST %version_path%\PnFMods ( mkdir %version_path%\PnFMods )
 
-$null > %path%\PnFModsLoader.py
+$null > %version_path%\PnFModsLoader.py
 
-echo %path%
+IF NOT EXIST %version_path%\PnFMods\AutoMod ( mkdir %version_path%\PnFMods\AutoMod )
 
-IF NOT EXIST %path%\PnFMods\AutoMod ( mkdir %path%\PnFMods\AutoMod )
-
-copy Main.py %path%\PnFMods\AutoMod\Main.py
+copy Main.py %version_path%\PnFMods\AutoMod\Main.py

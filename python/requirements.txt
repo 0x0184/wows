@@ -1,3 +1,5 @@
 Pillow  # ==7.1.2
 numpy
 OpenCV-Python==4.3.0
+grpcio
+grpcio-tools
