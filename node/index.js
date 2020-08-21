@@ -1,8 +1,11 @@
 import fs from 'fs';
 import QueueServer from './grpc-queue';
 
-const DIR = 'F:/Games/World_of_Warships_NA';
-const MOD_DIR = [DIR, 'bin/2744482/res_mods/0.9.7.0/PnFMods/AutoMod'].join('/');
+const config = require('../config.json');
+
+//const DIR = 'F:/Games/World_of_Warships_NA';
+//const MOD_DIR = [DIR, 'bin/2744482/res_mods/0.9.7.0/PnFMods/AutoMod'].join('/');
+const MOD_DIR = config.mod;
 
 const PREFIX = {
     Battle: 'battle',
