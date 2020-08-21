@@ -3,6 +3,7 @@
 import os
 import sys
 import json
+import datetime
 
 DRIVES = ['C', 'D', 'E', 'F']
 GAME_PATH = ['Games', 'World_of_Warships_NA', 'bin']
@@ -11,14 +12,16 @@ MOD_NAME = 'AutoMod'
 if __name__ == "__main__":
     installed_path = ''
     for drive in DRIVES:
-        path = os.path.join(drive + ':', *GAME_PATH)
-        print('path:', path)
+        path = os.path.join(drive + ':\\', *GAME_PATH)
+        print('[%s] Check: %s' % (datetime.datetime.now().isoformat(' '), path))    # noqa: E501
         if os.path.exists(path):
             installed_path = path
             break
     if not installed_path:
         print('Game not found')
         sys.exit(-1)
+    else:
+        print('Installed at:', path)
 
     build_numbers = os.listdir(installed_path)
     path = os.path.join(path, build_numbers[-1], 'res_mods')
