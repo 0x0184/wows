@@ -6,6 +6,7 @@
 
 ## 시작에 앞서..
 * 필요한 소프트웨어를 설치한다.
+    - Git ([LINK](https://git-scm.com/))
     - World of Warships (NA) ([LINK](https://na.wargaming.net/en/games/wows))
     - Python3 (3.6.x Recommended) ([LINK](https://www.python.org/downloads/windows/))
     - Node.js (>= 10) ([LINK](https://nodejs.org/en/))
