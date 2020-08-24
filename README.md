@@ -41,7 +41,7 @@ wows\node> npm install
 wows> cd proto\
 wows\proto> .\protoc.bat queue.proto
 ```
-* World of Warships (NA) 클라이언트를 실행한다. ([아이디 목록](https://github.com/0x0184/wows/blob/feat/log/LOGIN.md))
+* World of Warships (NA) 클라이언트를 실행한다. ([아이디 목록](https://github.com/0x0184/wows-authentications/blob/master/README.md))
 * 필요한 스크립트를 실행시킨다.
 ```bat
 :: 1. Node.js
