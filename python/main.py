@@ -127,7 +127,7 @@ class Digest:
         self.k_queue = ConditionalQueue()
         self.grpc = QueueClient()
 
-        self.rate = 10.0
+        self.rate = 1.0
 
         self.thread = Thread(target=self.run, daemon=True)
         self.thread.start()
@@ -173,7 +173,7 @@ class Digest:
             self.k_queue.enabled = True
 
             while not is_battle_ended():
-                # time.sleep(1.0 / self.rate)
+                time.sleep(1.0 / self.rate)
 
                 # State
                 timestamp = int(time.time() * 1000)
