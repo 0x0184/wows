@@ -11,7 +11,7 @@ for %%x in (C, D, E, F) do (
 
 IF "%installed_drive%" == "" (
     echo GAME_NOT_FOUND
-    exit
+    GOTO:EOF
 ) ELSE ( echo "GAME: %installed_drive%" )
 
 SET game_path=%installed_drive%:\Games\World_of_Warships_%region%\bin
