@@ -3,7 +3,7 @@
 import os
 import time
 import json
-import queue
+# import queue
 from datetime import datetime
 from threading import Thread
 from multiprocessing import Queue
@@ -28,6 +28,10 @@ with open(os.path.join(os.path.dirname(__file__), '..', 'config.json'), 'r') as 
 R, G, B = (0, 1, 2)
 WIDTH, HEIGHT = (1920, 1080)
 CELL_SIZE = 24
+
+key_forward = None
+key_turn = None
+key_fire = False
 
 
 def is_battle_started():
@@ -107,6 +111,9 @@ class ConditionalQueue:
         if self.enabled:
             self.queue.put(obj)
 
+    def get(self):
+        return self.queue.get()
+
     def get_nowait(self):
         return self.queue.get_nowait()
 
@@ -126,6 +133,8 @@ class Digest:
         self.thread.start()
 
     def run(self):
+        global key_forward, key_turn, key_fire
+
         while True:
 
             while not is_battle_started():
@@ -155,7 +164,8 @@ class Digest:
                                'visible', 'ship_visible',
                                'e_health', 'e_max_health', 'e_yaw', 'e_speed',
                                'e_visible', 'e_ship_visible',
-                               'key', 'mouse_x', 'mouse_y',
+                               'key_forward', 'key_turn', 'key_fire',
+                               'mouse_x', 'mouse_y',
                                '\n'])
             with open(os.path.join(logdir, 'meta.csv'), 'a') as f:
                 f.write(header)
@@ -168,11 +178,17 @@ class Digest:
                 # State
                 timestamp = int(time.time() * 1000)
                 img_path = str(timestamp) + '.png'
+                image_task_time = time.time()
                 ImageGrab.grab().save(os.path.join(logdir, img_path))
+                print('[%s] ImageGrab.grab(): %fs' % (datetime.now().isoformat(' '), time.time() - image_task_time))
+                grpc_task_time = time.time()
                 player_info = self.grpc.get_player_info()
+                print('[%s] gRPC PlayerInfo: %fs' % (datetime.now().isoformat(' '), time.time() - grpc_task_time))
+                grpc_task_time = time.time()
                 enemy_info = self.grpc.get_player_info(is_enemy=True)
+                print('[%s] gRPC EnemyInfo: %fs' % (datetime.now().isoformat(' '), time.time() - grpc_task_time))
 
-                fmt = '%f,%f,%f,%f,%s,%s'
+                fmt = '%f,%f,%f,%f,%d,%d'
                 player_str = fmt % (player_info.health, player_info.max_health,
                                     player_info.yaw, player_info.speed,
                                     player_info.is_visible, player_info.is_ship_visible)    # noqa: E501
@@ -180,18 +196,33 @@ class Digest:
                                    enemy_info.yaw, enemy_info.speed,
                                    enemy_info.is_visible, enemy_info.is_ship_visible)       # noqa: E501
 
+                """
                 # Action
                 try:
                     key_in = self.k_queue.get_nowait()
                 except queue.Empty:
                     key_in = (timestamp, None)
                 key_in = key_in[-1] or ''
+                """
+                forward = 0
+                turn = 0
+                fire = 0
+                if key_forward:
+                    forward = ['s', None, 'w'].index(key_forward) - 1
+                    key_forward = None
+                if key_turn:
+                    turn = ['q', None, 'e'].index(key_turn) - 1
+                    key_turn = None
+                if key_fire:
+                    fire = 1
+                    key_fire = False
 
                 mouse = self.grpc.get_mouse_input(timestamp-1000)
                 mouse = '%s,%s' % (mouse.dx, mouse.dy)
 
-                args = (img_path, player_str, enemy_str, key_in, mouse)
-                log = '%s,%s,%s,%s,%s\n' % args
+                args = (img_path, player_str, enemy_str,
+                        forward, turn, fire, mouse)
+                log = '%s,%s,%s,%d,%d,%d,%s\n' % args
                 print('Logging:: %s' % log)
                 with open(os.path.join(logdir, 'meta.csv'), 'a') as f:
                     f.write(log)
@@ -204,9 +235,23 @@ class Digest:
             print('--------------------------')
 
 
+def digest_fn(queue):
+    global key_forward, key_turn, key_fire
+
+    while True:
+        timestamp, key = queue.get()
+        print('Queue.digest_fn:', key)
+        if key in ['w', 's']:
+            key_forward = key
+        elif key in ['q', 'e']:
+            key_turn = key
+        elif key == 'Space':
+            key_fire = True
+
+
 def main():
     digest = Digest()
-    key_hook = KeyboardHook(queue=digest.k_queue)
+    key_hook = KeyboardHook(queue=digest.k_queue, digest_fn=digest_fn)
     pointer = get_function_pointer(hook_procedure)
     if key_hook.install_hook_procedure(pointer):
         print("installed keyLogger")
