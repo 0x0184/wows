@@ -20,20 +20,26 @@ const filenames = [];
 
 function handleMouseLog(path) {
     return new Promise((resolve, reject) => {
-        const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
-        server.addMouseInput(data);
+        try {
+            const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
+            server.addMouseInput(data);
+        } catch (e) {}
         resolve();
     });
 }
 
 function handlePlayerLog(path) {
-    const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
-    server.setPlayer(data);
+    try {
+        const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
+        server.setPlayer(data);
+    } catch (e) {}
 }
 
 function handleEnemyLog(path) {
-    const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
-    server.setEnemy(data);
+    try {
+        const data = JSON.parse(fs.readFileSync(path).toString('utf-8'));
+        server.setEnemy(data);
+    } catch (e) {}
 }
 
 fs.watch(MOD_DIR, (eventType, filename) => {
